@@ -20,19 +20,22 @@ object Compiler {
 }
 
 object Main extends App {
+  val input = args(0)
 
-  println(s"Compiling file: ${args(0)}")
+  println(s"Compiling file: $input")
 
-  val source = io.Source.fromInputStream(getClass.getResourceAsStream(s"/${args(0)}"))
+  val source = io.Source.fromInputStream(getClass.getResourceAsStream(s"/$input"))
   val text = try source.mkString finally source.close()
 
   Compiler(text).right.map(code => {
-    new PrintWriter("a.js") { write(code + template.builtins); close }
+    val ext = ".sjs".r
+    val translated = ext.replaceAllIn(input, ".mjs")
+    new PrintWriter(translated) { write(code + template.builtins); close }
   })
 
-  // Compiler(text).left.map(error => {
-  //   println("\n")
-  //   println(error)
-  //   println("\n")
-  // })
+  Compiler(text).left.map(error => {
+    println("\n")
+    println(error)
+    println("\n")
+  })
 }

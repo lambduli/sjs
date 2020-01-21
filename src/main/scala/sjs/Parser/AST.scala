@@ -50,6 +50,24 @@ case class ArgList(value: List[AST]) extends AST {
   }
 }
 
+case class Import(ids: List[AST], path: String) extends AST {
+  override def toString: String = {
+    val imported = ids.map(_.toString).mkString(", ")
+    val ext = ".sjs".r
+    val translated = ext.replaceAllIn(path, ".mjs")
+    return s"import {$imported} from '$translated'"
+  }
+}
+
+case class Export(id: String, expression: Option[AST]) extends AST {
+  override def toString: String = {
+    expression match {
+      case Some(expr) => return s"export const $id = $expr"
+      case _ => return s"export { $id }"
+    }
+  }
+}
+
 case class FnDef(name: String, args: AST, body: AST) extends AST {
   override def toString: String = {
     val paramlist = args.toString

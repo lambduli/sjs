@@ -15,6 +15,9 @@ case object RIGHT extends Token
 case object DEFINE extends Token
 case object LAMBDA extends Token
 
+case object IMPORT extends Token
+case object EXPORT extends Token
+
 case class NUMBER(double : Double) extends Token
 case class STRING(str : String) extends Token
 case class BOOL(bool : Boolean) extends Token
@@ -30,7 +33,7 @@ case object MULTIPLY extends Token {
   override def toString = "*"
 }
 case object DIVIDE extends Token {
-  override def toString = ":"
+  override def toString = "/"
 }
 case object EQUAL extends Token {
   override def toString = "==="
