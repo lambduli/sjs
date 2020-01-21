@@ -1,3 +1,7 @@
+(import `(fn fun) "./module.sjs")
+(export foo "some string")
+;;
+;;
 (define sumlists (lista listb)
   ( if  (null lista)
         nil
