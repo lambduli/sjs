@@ -1,7 +1,9 @@
 import {fn, fun} from './module.mjs'
+
 export const foo = 'some string'
-//
-//
+
+// single line comment
+// also this ^^
 function sumlists  (lista, listb)  {
   return is_null(lista) ? []  :  [(car(lista) * car(listb)), ...sumlists(cdr(lista), cdr(listb))]
 }

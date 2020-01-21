@@ -55,15 +55,15 @@ case class Import(ids: List[AST], path: String) extends AST {
     val imported = ids.map(_.toString).mkString(", ")
     val ext = ".sjs".r
     val translated = ext.replaceAllIn(path, ".mjs")
-    return s"import {$imported} from '$translated'"
+    return s"import {$imported} from '$translated'\n"
   }
 }
 
 case class Export(id: String, expression: Option[AST]) extends AST {
   override def toString: String = {
     expression match {
-      case Some(expr) => return s"export const $id = $expr"
-      case _ => return s"export { $id }"
+      case Some(expr) => return s"export const $id = $expr\n"
+      case _ => return s"export { $id }\n"
     }
   }
 }
