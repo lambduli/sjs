@@ -14,7 +14,7 @@ object LipoLexer extends RegexParsers {
   }
 
   def identifier: Parser[IDENTIFIER] = {
-    "[a-zA-Z_][a-zA-Z0-9_]*".r ^^ { str => IDENTIFIER(str) }
+    "[a-zA-Z_][[.a-zA-Z0-9_]+[a-zA-Z0-9_]]*".r ^^ { str => IDENTIFIER(str) }
   }
 
   def string: Parser[STRING] = {

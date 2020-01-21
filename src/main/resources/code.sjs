@@ -26,22 +26,22 @@
 )
 
 
-(println "(sumlists `(1 2 3 4) `(3 2 1 5) )")
+(console.log "(sumlists `(1 2 3 4) `(3 2 1 5) )")
 (println (sumlists `(1 2 3 4) `(3 2 1 5) ))
 
-(println "(and true (or false true))")
+(console.log "(and true (or false true))")
 (println (and true (or false true)))
 
-(println "(map `(1 2 3 4 5) (lambda (n) (* n n)))")
+(console.log "(map `(1 2 3 4 5) (lambda (n) (* n n)))")
 (println (map `(1 2 3 4 5) (lambda (n) (* n n))))
 
-(println "(fact 5)")
+(console.log "(fact 5)")
 (println (fact 5))
 
-(println "`(1 2 3 4 ,(* 6 (+ 2 3)))")
+(console.log "`(1 2 3 4 ,(* 6 (+ 2 3)))")
 (println `(1 2 3 4 ,(* 6 (+ 2 3))))
 
-(println "`(1 2 3 4 ,(* 6 (+ 2 `(23 24 25))))")
+(console.log "`(1 2 3 4 ,(* 6 (+ 2 `(23 24 25))))")
 (println `(1 2 3 4 ,(* 6 (+ 2 `(23 24 25)))))
 
-(println "END")
+(console.log "END")
