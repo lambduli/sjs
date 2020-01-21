@@ -1,4 +1,6 @@
-import {fn, fun} from './module.mjs'
+import {fn, fun, str} from './module.mjs'
+
+import {foo, bar, baz} from './jsmodule.mjs'
 
 export const foo = 'some string'
 

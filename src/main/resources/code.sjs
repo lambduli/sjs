@@ -1,4 +1,5 @@
-(import `(fn fun) "./module.sjs")
+(import `(fn fun str) "./module.sjs")
+(import `(foo bar baz) "./jsmodule.mjs")
 (export foo "some string")
 ;; single line comment
 ;; also this ^^
