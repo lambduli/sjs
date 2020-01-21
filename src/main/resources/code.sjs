@@ -44,4 +44,7 @@
 (console.log "`(1 2 3 4 ,(* 6 (+ 2 `(23 24 25))))")
 (println `(1 2 3 4 ,(* 6 (+ 2 `(23 24 25)))))
 
+(console.log "`(,(fn 2 3) ,(fun 2 3)")
+(println `(,(fn 2 3) ,(fun 2 3)))
+
 (console.log "END")
