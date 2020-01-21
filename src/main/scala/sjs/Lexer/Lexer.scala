@@ -9,15 +9,19 @@ object LipoLexer extends RegexParsers {
   override def skipWhitespace = true
   override val whiteSpace = "[ \t\r\f\n]+".r
 
+  def comment: Parser[COMMENT] = {
+    ";;.*".r ^^ { comment => COMMENT(comment) }
+  }
+
   def identifier: Parser[IDENTIFIER] = {
-  "[a-zA-Z_][a-zA-Z0-9_]*".r ^^ { str => IDENTIFIER(str) }
+    "[a-zA-Z_][a-zA-Z0-9_]*".r ^^ { str => IDENTIFIER(str) }
   }
 
   def string: Parser[STRING] = {
-  """"[^"]*"""".r ^^ { str =>
-    val content = str.substring(1, str.length - 1)
-      STRING(content)
-    }
+    """"[^"]*"""".r ^^ { str =>
+      val content = str.substring(1, str.length - 1)
+        STRING(content)
+      }
   }
 
   def ifclause = "if" ^^ (_ => IF)
@@ -54,10 +58,11 @@ object LipoLexer extends RegexParsers {
   def greatereq = ">=" ^^ (_ => GREATEREQ)
   def and = "and" ^^ (_ => AND)
   def or = "or" ^^ (_ => OR)
-  
+
   def tokens: Parser[List[Token]] = {
     phrase(rep1(
-      true_ | false_ | define | ifclause | lambda | nil | is_null | `import` | export
+      comment
+      | true_ | false_ | define | ifclause | lambda | nil | is_null | `import` | export
       | number | plus | minus | multiply | divide | equal | lesser | greater | lessereq | greatereq | and | or
       | identifier | string | number | quote | comma | left | right))
   }

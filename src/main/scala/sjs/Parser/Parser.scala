@@ -27,6 +27,10 @@ object LipoParser extends Parsers {
     }
   }
 
+  private def comment: Parser[AST] = {
+    accept("comment", { case comment @ COMMENT(content) => Comment(content) })
+  }
+
   private def identifier: Parser[AST] = {
     accept("identifier", { case id @ IDENTIFIER(name) => Identifier(name) })
   }
@@ -60,7 +64,7 @@ object LipoParser extends Parsers {
   }
 
   def lispram: Parser[AST] = {
-    codelist | operator | identifier | ifexp | define | value | quotedlist | `import` | export
+    codelist | operator | identifier | ifexp | define | value | quotedlist | `import` | export | comment
   }
 
   def quotedlispram: Parser[AST] = {

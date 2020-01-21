@@ -2,6 +2,8 @@ package lexer.token
 
 sealed trait Token
 
+case class COMMENT(str : String) extends Token
+
 case class IDENTIFIER(str : String) extends Token
 
 case object IF extends Token

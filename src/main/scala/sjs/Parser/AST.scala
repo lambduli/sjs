@@ -94,3 +94,10 @@ case class IfThenElse(condition: AST, thenDo: AST, otherwise: AST) extends AST {
     return s" $con ? $thendo  :  $other"
   }
 }
+
+case class Comment(content: String) extends AST {
+  override def toString: String = {
+    val ext = ";;".r
+    return ext.replaceAllIn(content, "//")
+  }
+}
