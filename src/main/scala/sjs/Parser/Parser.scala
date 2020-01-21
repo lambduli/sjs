@@ -28,31 +28,33 @@ object LipoParser extends Parsers {
   }
 
   private def comment: Parser[AST] = {
-    accept("comment", { case comment @ COMMENT(content) => Comment(content) })
+    accept("comment", { case COMMENT(content) => Comment(content) })
   }
 
   private def identifier: Parser[AST] = {
-    accept("identifier", { case id @ IDENTIFIER(name) => Identifier(name) })
+    accept("identifier", { case IDENTIFIER(name) => Identifier(name) })
   }
 
   private def operator: Parser[AST] = {
-    (PLUS | MINUS | MULTIPLY | DIVIDE | EQUAL | LESSER | GREATER | LESSEREQ | GREATEREQ | AND | OR) ^^ { case op => Operator(op)}
+    (PLUS | MINUS | MULTIPLY | DIVIDE | EQUAL | LESSER | GREATER | LESSEREQ | GREATEREQ | AND | OR) ^^ {
+      case op => Operator(op)
+      }
   }
 
   private def stringlit: Parser[AST] = {
-    accept("string literal", { case str @ STRING(value) => StringLit(value) })
+    accept("string literal", { case STRING(value) => StringLit(value) })
   }
 
   private def numberlit: Parser[AST] = {
-    accept("numeric literal", { case num @ NUMBER(value) => NumberLit(value) })
+    accept("numeric literal", { case NUMBER(value) => NumberLit(value) })
   }
 
   private def boollit: Parser[AST] = {
-    accept("boolean literal", { case b @ BOOL(value) => BoolLit(value) })
+    accept("boolean literal", { case BOOL(value) => BoolLit(value) })
   }
 
   private def nillit: Parser[AST] = {
-    accept("nil literal", { case nil @ NIL => Nil })
+    accept("nil literal", { case NIL => Nil })
   }
 
   private def value: Parser[AST] = {
@@ -95,7 +97,6 @@ object LipoParser extends Parsers {
     (LEFT ~ IF ~ (boollit | codelist) ~ (value | codelist) ~ (value | codelist) ~ RIGHT) ^^ {
       case left ~ if_ ~ condition ~ then_ ~ else_ ~ right => IfThenElse(condition, then_, else_)
     }
-
   }
 
   def define: Parser[AST] = {

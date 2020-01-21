@@ -94,12 +94,12 @@ case object Nil extends AST {
   override def toString = "[]"
 }
 
-case class IfThenElse(condition: AST, thenDo: AST, otherwise: AST) extends AST {
+case class IfThenElse(condition: AST, `then`: AST, `else`: AST) extends AST {
   override def toString: String = {
     val con = condition.toString
-    val thendo = thenDo.toString
-    val other = otherwise.toString
-    return s" $con ? $thendo  :  $other"
+    val thendo = `then`.toString
+    val otherwise = `else`.toString
+    return s" $con ? $thendo  :  $otherwise"
   }
 }
 
