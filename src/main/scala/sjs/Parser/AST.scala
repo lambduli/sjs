@@ -25,6 +25,14 @@ case class BoolLit(value: Boolean) extends AST {
   override def toString = s"$value"
 }
 
+case class LetExp(varlist: List[(String, AST)], body: AST) extends AST {
+  override def toString: String = {
+    val args = varlist.map(_._1).mkString(", ")
+    val values = varlist.map(_._2).map(_.toString).mkString(", ")
+    return s"(($args) => $body)($values)"
+  }
+}
+
 case class AppList(value: List[AST]) extends AST {
   override def toString: String = {
     val fn = value.head.toString

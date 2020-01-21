@@ -16,6 +16,7 @@ case object RIGHT extends Token
 
 case object DEFINE extends Token
 case object LAMBDA extends Token
+case object LET extends Token
 
 case object IMPORT extends Token
 case object EXPORT extends Token

@@ -60,11 +60,11 @@ object LipoParser extends Parsers {
   }
 
   def program: Parser[AST] = {
-    rep1(lispram) ^^ { case exps => Program(exps) }
+    rep1(lispram | comment | `import` | export | define) ^^ { case exps => Program(exps) }
   }
 
   def lispram: Parser[AST] = {
-    codelist | operator | identifier | ifexp | define | value | quotedlist | `import` | export | comment
+    codelist | operator | identifier | ifexp  | value | quotedlist |  letexp
   }
 
   def quotedlispram: Parser[AST] = {
@@ -119,6 +119,18 @@ object LipoParser extends Parsers {
   def export: Parser[AST] = {
     (LEFT ~ EXPORT ~ identifier ~ value.? ~ RIGHT) ^^ {
       case left ~ exp ~ Identifier(id) ~ statement ~ right => Export(id, statement)
+    }
+  }
+
+  def letexp: Parser[AST] = {
+    (LEFT ~ LET ~ LEFT ~ rep1(vardef) ~ RIGHT ~ lispram ~ RIGHT) ^^ {
+      case left ~ let ~ l ~ varlist ~ r ~ body ~ right => LetExp(varlist, body)
+    }
+  }
+
+  def vardef: Parser[(String, AST)] = {
+    (LEFT ~ identifier ~ lispram ~ RIGHT) ^^ {
+      case left ~ Identifier(id) ~ value ~ right => (id, value)
     }
   }
 }

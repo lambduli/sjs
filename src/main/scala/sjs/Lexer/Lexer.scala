@@ -35,6 +35,7 @@ object LipoLexer extends RegexParsers {
 
   def define = "define" ^^ (_ => DEFINE)
   def lambda = "lambda" ^^ (_ => LAMBDA)
+  def let = "let" ^^ (_ => LET)
 
   def `import` = "import" ^^ (_ => IMPORT)
   def export = "export" ^^ (_ => EXPORT)
@@ -61,7 +62,7 @@ object LipoLexer extends RegexParsers {
 
   def tokens: Parser[List[Token]] = {
     phrase(rep1(
-      comment
+      comment | let
       | true_ | false_ | define | ifclause | lambda | nil | is_null | `import` | export
       | number | plus | minus | multiply | divide | equal | lesser | greater | lessereq | greatereq | and | or
       | identifier | string | number | quote | comma | left | right))

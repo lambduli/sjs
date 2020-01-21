@@ -1,8 +1,7 @@
 import {fn, fun, str} from './module.mjs'
 
-import {foo, bar, baz} from './jsmodule.mjs'
-
-export const foo = 'some string'
+// (import `(foo bar baz) "./jsmodule.mjs")
+export const omega = 'some string'
 
 // single line comment
 // also this ^^
@@ -18,6 +17,9 @@ function map  (list, fn)  {
   return is_null(list) ? []  :  [fn(car(list)), ...map(cdr(list), fn)]
 }
 
+console.log('(let ((foo (+ 1 2)) (bar (* 3 4))) (+ foo bar))')
+println(((foo, bar) => (foo + bar))((1.0 + 2.0), (3.0 * 4.0)))
+// (println (letrec ((fact (lambda (n) (if (= n 0) 1 (* n (fact (- n 1))) )))) (fact 3) ))
 console.log('(sumlists `(1 2 3 4) `(3 2 1 5) )')
 println(sumlists([1.0, 2.0, 3.0, 4.0], [3.0, 2.0, 1.0, 5.0]))
 console.log('(and true (or false true))')

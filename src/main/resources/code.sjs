@@ -1,6 +1,6 @@
 (import `(fn fun str) "./module.sjs")
-(import `(foo bar baz) "./jsmodule.mjs")
-(export foo "some string")
+;; (import `(foo bar baz) "./jsmodule.mjs")
+(export omega "some string")
 ;; single line comment
 ;; also this ^^
 (define sumlists (lista listb)
@@ -26,6 +26,11 @@
   )
 )
 
+
+(console.log "(let ((foo (+ 1 2)) (bar (* 3 4))) (+ foo bar))")
+(println (let ((foo (+ 1 2)) (bar (* 3 4))) (+ foo bar)))
+
+;; (println (letrec ((fact (lambda (n) (if (= n 0) 1 (* n (fact (- n 1))) )))) (fact 3) ))
 
 (console.log "(sumlists `(1 2 3 4) `(3 2 1 5) )")
 (println (sumlists `(1 2 3 4) `(3 2 1 5) ))
