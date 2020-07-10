@@ -16,7 +16,8 @@ object ToJSCompiler extends Compiler {
     case LetExp(varlist: List[(String, AST)], body: AST) => {
       val args = varlist.map(_._1).mkString(", ")
       val values = varlist.map(_._2).map(compile).mkString(", ")
-      s"(($args) => $body)($values)"
+      val bod = compile(body)
+      s"(($args) => $bod)($values)"
     }
     
     case AppList(value: List[AST]) => {
@@ -24,8 +25,8 @@ object ToJSCompiler extends Compiler {
       val args = value.tail.map(compile).mkString(", ")
 
       value(0) match {
-        case Operator(op) => return s"(${value(1)} $fn ${value(2)})"
-        case Identifier("cons") => s"[${value(1)}, ...${value(2)}]" // comment this line out if you want normal cons output
+        case Operator(op) => return s"(${compile(value(1))} $fn ${compile(value(2))})"
+        case Identifier("cons") => s"[${compile(value(1))}, ...${compile(value(2))}]" // comment this line out if you want normal cons output
         case _ => return s"$fn($args)"
       }
     }
@@ -49,7 +50,7 @@ object ToJSCompiler extends Compiler {
 
     case Export(id: String, expression: Option[AST]) =>
       expression match {
-        case Some(expr) => return s"export const $id = $expr\n"
+        case Some(expr) => return s"export const $id = ${compile(expr)}\n"
         case _ => return s"export { $id }\n"
       }
 
