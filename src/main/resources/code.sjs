@@ -1,8 +1,12 @@
 (import `(fn fun str) "./module.sjs")
-;; (import `(foo bar baz) "./jsmodule.mjs")
 (export omega "some string")
+
+;; (import `(foo bar baz) "./jsmodule.mjs")
+ 
 ;; single line comment
 ;; also this ^^
+
+
 (define sumlists (lista listb)
   ( if  (null lista)
         nil
@@ -52,5 +56,8 @@
 
 (console.log "`(,(fn 2 3) ,(fun 2 3)")
 (println `(,(fn 2 3) ,(fun 2 3)))
+
+(console.log "str")
+(println str)
 
 (console.log "END")

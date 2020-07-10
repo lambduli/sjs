@@ -10,25 +10,28 @@ import parser.ast._
 
 import template._
 
-object Compiler {
+import compiler.tojs._
+import compiler._
+
+object Compilator {
   var s : Set[String] = _
 
-  def apply(input: String, $s : Set[String]): Either[CompilationError, AST] = {
+  def apply(input: String, compiler: Compiler, $s : Set[String]): Either[CompilationError, AST] = {
     println(s"\n\nCompiling file: $input\n\n")
 
     s = $s
     val source = io.Source.fromInputStream(getClass.getResourceAsStream(s"/$input"))
     val text = try source.mkString finally source.close()
-    val ast = compile(text)
+    val eitherAST = parseToAST(text)
 
-    ast.right.map(program => {
-      program match {
+    eitherAST.right.map(ast => {
+      ast match {
         case Program(statements) => for (statement <- statements) {
           statement match {
             case Import(ids, path) => if (path.contains(".sjs") && ! alreadyDone(path)) {
               val prefix = "[.]/".r
               val trimmed = prefix.replaceAllIn(path, "")
-              Compiler(trimmed, s)
+              Compilator(trimmed, compiler, s)
             }
             case _ => ()
           }
@@ -37,17 +40,18 @@ object Compiler {
       }
     })
     
-    ast.right.map(code => {
+    
+    eitherAST.right.map(code => {
       val ext = ".sjs".r
       val translated = ext.replaceAllIn(input, ".mjs")
-      new PrintWriter(translated) { write(code + template.builtins); close }
+      new PrintWriter(translated) { write(compiler.compile(code) + template.builtins); close }
       s += input
     })
 
-    return ast
+    return eitherAST
   }
 
-  def compile(code: String): Either[CompilationError, AST] = {
+  def parseToAST(code: String): Either[CompilationError, AST] = {
     for {
       tokens <- LipoLexer(code).right
       ast <- LipoParser(tokens).right
@@ -62,7 +66,7 @@ object Compiler {
 object Main extends App {
   val input = args(0)
 
-  Compiler(input, Set[String]())
+  Compilator(input, ToJSCompiler, Set[String]())
     .left.map(error => {
       println("\n")
       println(error)

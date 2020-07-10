@@ -1,8 +1,8 @@
 import {fn, fun, str} from './module.mjs'
 
-// (import `(foo bar baz) "./jsmodule.mjs")
 export const omega = 'some string'
 
+// (import `(foo bar baz) "./jsmodule.mjs")
 // single line comment
 // also this ^^
 function sumlists  (lista, listb)  {
@@ -34,6 +34,8 @@ console.log('`(1 2 3 4 ,(* 6 (+ 2 `(23 24 25))))')
 println([1.0, 2.0, 3.0, 4.0, (6.0 * (2.0 + [23.0, 24.0, 25.0]))])
 console.log('`(,(fn 2 3) ,(fun 2 3)')
 println([fn(2.0, 3.0), fun(2.0, 3.0)])
+console.log('str')
+println(str)
 console.log('END')
 
 ///////////////////////////////////////////////////////
