@@ -5,13 +5,11 @@ Simple compiler from Symbolic JavaScript (Lisp-like language) to JavaScript. Cre
 - install sbt
 - `$ sbt`
 - `compile`
-- `run code.sjs`
+- `run examples/code.sjs`
 
 ## to run compiled program:
 - install node
-- `$ node a.js`
-
-You can change content in the `code.js` - file is inside `src/main/resources`.
+- `$ node examples/code.mjs`
 
 ## example of Symbolic JavaScript code:
 ```lisp
