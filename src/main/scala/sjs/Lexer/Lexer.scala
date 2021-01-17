@@ -10,7 +10,7 @@ object LipoLexer extends RegexParsers {
   override val whiteSpace = "[ \t\r\f\n]+".r
 
   def comment: Parser[COMMENT] = {
-    ";;.*".r ^^ { comment => COMMENT(comment) }
+    ";;[^;;]*;;".r ^^ { comment => COMMENT(comment) }
   }
 
   def identifier: Parser[IDENTIFIER] = {
