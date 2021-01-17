@@ -1,6 +1,7 @@
 package main
 
 import java.io.PrintWriter
+import scala.io.Source
 
 import lexer._
 import lexer.error._
@@ -16,12 +17,12 @@ import compiler._
 object Compilator {
   var s : Set[String] = _
 
-  def apply(input: String, compiler: Compiler, $s : Set[String]): Either[CompilationError, AST] = {
-    println(s"\n\nCompiling file: $input\n\n")
+  def apply(filePath: String, compiler: Compiler, $s : Set[String]): Either[CompilationError, AST] = {
+    println(s"\n\nNow compiling file: $filePath\n\n")
 
     s = $s
-    val source = io.Source.fromInputStream(getClass.getResourceAsStream(s"/$input"))
-    val text = try source.mkString finally source.close()
+    val source = Source.fromFile(filePath)
+    val text = try source.getLines.mkString finally source.close
     val eitherAST = parseToAST(text)
 
     eitherAST.right.map(ast => {
@@ -31,7 +32,9 @@ object Compilator {
             case Import(ids, path) => if (path.contains(".sjs") && ! alreadyDone(path)) {
               val prefix = "[.]/".r
               val trimmed = prefix.replaceAllIn(path, "")
-              Compilator(trimmed, compiler, s)
+              val lastSlash = filePath.lastIndexOf("/")
+              val importFilePath = s"${filePath.substring(0, lastSlash)}/$trimmed"
+              Compilator(importFilePath, compiler, s)
             }
             case _ => ()
           }
@@ -42,10 +45,10 @@ object Compilator {
     
     
     eitherAST.right.map(code => {
-      val ext = ".sjs".r
-      val translated = ext.replaceAllIn(input, ".mjs")
-      new PrintWriter(translated) { write(compiler.compile(code) + template.builtins); close }
-      s += input
+      val extPos = filePath.lastIndexOf(".sjs")
+      val translatedFilePath = filePath.substring(0, extPos) ++ ".mjs"
+      new PrintWriter(translatedFilePath) { write(compiler.compile(code) + template.builtins); close }
+      s += filePath
     })
 
     return eitherAST
@@ -65,8 +68,10 @@ object Compilator {
 
 object Main extends App {
   val input = args(0)
+  val currentDir = System.getProperty("user.dir")
+  val filePath = s"$currentDir/$input"
 
-  Compilator(input, ToJSCompiler, Set[String]())
+  Compilator(filePath, ToJSCompiler, Set[String]())
     .left.map(error => {
       println("\n")
       println(error)
